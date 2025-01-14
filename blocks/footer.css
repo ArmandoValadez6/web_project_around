@@ -1,0 +1,35 @@
+.footer {
+  max-width: 880px;
+  padding: 0;
+  margin-top: 0;
+  margin: auto;
+}
+
+.footer__page {
+  color: #545454;
+  margin-top: 67px;
+  padding-bottom: 60px;
+
+  font-family: "Inter Regular", "Arial", sans-serif;
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+@media (max-width: 1000px) {
+  .footer__page {
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 725px) {
+  .footer {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer__page {
+    width: 310px;
+  }
+}

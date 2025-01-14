@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Around</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Armando-Valadez" />
+    <meta name="keywords" content="Tripleten, 7th Sprint, Around" />
+    <meta
+      name="description"
+      content="Proyecto del 7mo Sprint en Tripleten (Brief con figma, diseño grid y responsivo e introduccion de JavaScript)"
+    />
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./pages/index.css" />
+  </head>
+
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="header__title">
+          <img
+            src="./images/around-vector.jpg"
+            alt="Header-title-vector"
+            class="header__main-image"
+          />
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="profile">
+          <img
+            src="./images/avatar.jpg"
+            alt="Profile-avatar"
+            class="profile__avatar"
+          />
+          <div class="profile__info">
+            <div class="profile__name-button-group">
+              <p class="profile__user-name">Jacques Cousteau</p>
+              <button class="profile__edit-button">
+                <img
+                  src="./images/edit-button.jpg"
+                  alt="Edit-Btton"
+                  class="profile__edit-button-image"
+                />
+              </button>
+            </div>
+            <p class="profile__user-occupation">Explorador</p>
+          </div>
+          <button class="profile__add-button">
+            <img
+              src="./images/add-button.jpg"
+              alt="Profile-add-button"
+              class="profile__add-button-image"
+            />
+          </button>
+        </div>
+
+        <div class="elements">
+          <div class="elements__single">
+            <img
+              src="./images/mill-valley-ca.jpg"
+              alt="Mill Valley CA"
+              class="elements__image"
+            />
+            <div class="elements__info">
+              <p class="elements__name">Mill Valley</p>
+              <button class="elements__like-button">
+                <span class="elements__like-button-icon">&#x1f90d;</span>
+              </button>
+            </div>
+          </div>
+          <div class="elements__single">
+            <img
+              src="./images/niagara-falls-ny.jpg"
+              alt="Niagara Falls NY"
+              class="elements__image"
+            />
+            <div class="elements__info">
+              <p class="elements__name">Niagara Falls</p>
+              <button class="elements__like-button">
+                <span class="elements__like-button-icon">&#x1f90d;</span>
+              </button>
+            </div>
+          </div>
+          <div class="elements__single">
+            <img
+              src="./images/page-az.jpg"
+              alt="Page AZ"
+              class="elements__image"
+            />
+            <div class="elements__info">
+              <p class="elements__name">Grand Canyon</p>
+              <button class="elements__like-button">
+                <span class="elements__like-button-icon">&#x1f90d;</span>
+              </button>
+            </div>
+          </div>
+          <div class="elements__single">
+            <img
+              src="./images/yellowstone-wy.jpg"
+              alt="Yellowstone Wy"
+              class="elements__image"
+            />
+            <div class="elements__info">
+              <p class="elements__name">Yellowstone</p>
+              <button class="elements__like-button">
+                <span class="elements__like-button-icon">&#x1f90d;</span>
+              </button>
+            </div>
+          </div>
+          <div class="elements__single">
+            <img
+              src="./images/lincoln-nh.jpg"
+              alt="Lincoln Nh"
+              class="elements__image"
+            />
+            <div class="elements__info">
+              <p class="elements__name">Lincoln</p>
+              <button class="elements__like-button">
+                <span class="elements__like-button-icon">&#x1f90d;</span>
+              </button>
+            </div>
+          </div>
+          <div class="elements__single">
+            <img
+              src="./images/trapper-creek-ak.jpg"
+              alt="Traper Creek Ak"
+              class="elements__image elements__image-extended"
+            />
+            <div class="elements__info">
+              <p class="elements__name">Traper Creek</p>
+              <button class="elements__like-button">
+                <span class="elements__like-button-icon">&#x1f90d;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <section class="popup popup_opened" id="myModal">
+          <div class="popup__container">
+            <h2 class="popup__title">Editar perfil</h2>
+            <button class="popup__close-button">
+              <span class="popup__close-icon">&#x2715;</span>
+            </button>
+            <form class="form popup__form">
+              <fieldset class="form__fieldset form__fieldset-profile-info">
+                <input
+                  class="form__input form__input-nombre"
+                  type="text"
+                  placeholder="Nombre"
+                  id="nombre"
+                  required
+                />
+                <input
+                  class="form__input form__input-acerca-de-mi"
+                  type="text"
+                  placeholder="Acerca de mí"
+                  id="acerca-de-mi"
+                  required
+                />
+              </fieldset>
+              <button
+                type="button"
+                class="form__button form__save-button"
+                disabled
+              >
+                Guardar
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p class="footer__page">© 2024 Around The U.S.</p>
+      </footer>
+    </div>
+    <script src="./scripts/script.js"></script>
+  </body>
+</html>
