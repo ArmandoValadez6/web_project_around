@@ -7,6 +7,35 @@ let saveButton = document.querySelector(".form__save-button");
 let userName = document.querySelector(".profile__user-name");
 let userOccupation = document.querySelector(".profile__user-occupation");
 
+const intialCards = [
+  {
+    name: "Mill Valley CA",
+    link: "./images/mill-valley-ca.jpg",
+  },
+  {
+    name: "Niagara Falls NY",
+    link: "./images/niagara-falls-ny.jpg",
+  },
+  {
+    name: "Grand Canyon AZ",
+    link: "./images/page-az.jpg",
+  },
+  {
+    name: "Yellowstone Wy",
+    link: "./images/yellowstone-wy.jpg",
+  },
+  {
+    name: "Lincoln Nh",
+    link: "./images/lincoln-nh.jpg",
+  },
+  {
+    name: "Traper Creek Ak",
+    link: "./images/trapper-creek-ak.jpg",
+  },
+];
+
+function setInitialCards() {}
+
 function closePopup() {
   popup.classList.remove("popup_opened");
   inputName.value = "";
