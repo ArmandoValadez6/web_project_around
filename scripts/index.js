@@ -48,6 +48,13 @@ function setInitialCards() {
     elementsSingle.querySelector(".elements__name").textContent = card.name;
 
     elements.append(elementsSingle);
+
+    if (card.name == "Traper Creek, Ak") {
+      elementsSingle
+        .querySelector(".elements__image")
+        .classList.add("elements__image-extended");
+      return;
+    }
   });
 }
 
