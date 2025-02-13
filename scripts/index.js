@@ -6,35 +6,52 @@ let inputOccupation = document.querySelector(".form__input-acerca-de-mi");
 let saveButton = document.querySelector(".form__save-button");
 let userName = document.querySelector(".profile__user-name");
 let userOccupation = document.querySelector(".profile__user-occupation");
+const elements = document.querySelector(".elements");
 
 const intialCards = [
   {
-    name: "Mill Valley CA",
+    name: "Mill Valley, CA",
     link: "./images/mill-valley-ca.jpg",
   },
   {
-    name: "Niagara Falls NY",
+    name: "Niagara Falls, NY",
     link: "./images/niagara-falls-ny.jpg",
   },
   {
-    name: "Grand Canyon AZ",
+    name: "Grand Canyon, AZ",
     link: "./images/page-az.jpg",
   },
   {
-    name: "Yellowstone Wy",
+    name: "Yellowstone, Wy",
     link: "./images/yellowstone-wy.jpg",
   },
   {
-    name: "Lincoln Nh",
+    name: "Lincoln, Nh",
     link: "./images/lincoln-nh.jpg",
   },
   {
-    name: "Traper Creek Ak",
+    name: "Traper Creek, Ak",
     link: "./images/trapper-creek-ak.jpg",
   },
 ];
 
-function setInitialCards() {}
+function setInitialCards() {
+  intialCards.forEach(function (card) {
+    const elementsTemplate =
+      document.querySelector("#elements-template").content;
+    const elementsSingle = elementsTemplate
+      .querySelector(".elements__single")
+      .cloneNode("true");
+
+    elementsSingle.querySelector(".elements__image").src = card.link;
+    elementsSingle.querySelector(".elements__image").alt = card.name;
+    elementsSingle.querySelector(".elements__name").textContent = card.name;
+
+    elements.append(elementsSingle);
+  });
+}
+
+setInitialCards();
 
 function closePopup() {
   popup.classList.remove("popup_opened");
