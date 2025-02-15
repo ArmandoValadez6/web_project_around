@@ -37,22 +37,21 @@ const intialCards = [
 
 function setInitialCards() {
   intialCards.forEach(function (card) {
-    const elementsTemplate =
-      document.querySelector("#elements-template").content;
-    const elementsSingle = elementsTemplate
-      .querySelector(".elements__single")
+    const elementTemplate = document.querySelector("#element-template").content;
+    const elementSingle = elementTemplate
+      .querySelector(".element__single")
       .cloneNode("true");
 
-    elementsSingle.querySelector(".elements__image").src = card.link;
-    elementsSingle.querySelector(".elements__image").alt = card.name;
-    elementsSingle.querySelector(".elements__name").textContent = card.name;
+    elementSingle.querySelector(".element__image").src = card.link;
+    elementSingle.querySelector(".element__image").alt = card.name;
+    elementSingle.querySelector(".element__name").textContent = card.name;
 
-    elements.append(elementsSingle);
+    elements.append(elementSingle);
 
     if (card.name == "Traper Creek, Ak") {
-      elementsSingle
-        .querySelector(".elements__image")
-        .classList.add("elements__image-extended");
+      elementSingle
+        .querySelector(".element__image")
+        .classList.add("element__image-extended");
       return;
     }
   });

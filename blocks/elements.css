@@ -8,7 +8,7 @@
   padding: 0;
 }
 
-.elements__single {
+.element__single {
   background-color: #fff;
   max-width: 282px;
   max-height: 361px;
@@ -16,16 +16,16 @@
   border-radius: 10px;
 }
 
-.elements__image {
+.element__image {
   max-width: 600px;
   max-height: 282px;
 }
 
-.elements__image-extended {
+.element__image-extended {
   min-width: 282px;
 }
 
-.elements__info {
+.element__info {
   display: flex;
   justify-content: space-between;
   padding-top: 25px;
@@ -34,7 +34,7 @@
   margin-right: 15px;
 }
 
-.elements__name {
+.element__name {
   font-family: "Inter Black", Arial, sans-serif;
   font-size: 24px;
   line-height: 1.2;
@@ -47,7 +47,7 @@
   overflow: hidden;
 }
 
-.elements__like-button {
+.element__like-button {
   border: none;
   padding: 0px;
   background-color: #fff;
@@ -56,12 +56,12 @@
   fill: black;
 }
 
-.elements__like-button-image {
+.element__like-button-image {
   padding: 0;
   background-color: #53e;
 }
 
-.elements__like-button-icon {
+.element__like-button-icon {
   margin: auto;
   font-size: 20px;
   cursor: pointer;
@@ -70,7 +70,7 @@
   top: -0.5px;
 }
 
-.elements__like-button-icon:hover {
+.element__like-button-icon:hover {
   opacity: 60%;
 }
 
