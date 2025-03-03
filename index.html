@@ -57,7 +57,7 @@
 
         <div class="elements"></div>
 
-        <section class="popup popup_opened" id="myModal">
+        <section class="popup popup_opened" id="profileModal">
           <div class="popup__container">
             <h2 class="popup__title">Editar perfil</h2>
             <button class="popup__close-button">
@@ -66,14 +66,14 @@
             <form class="form popup__form">
               <fieldset class="form__fieldset form__fieldset-profile-info">
                 <input
-                  class="form__input form__input-nombre"
+                  class="form__popup-input form__input-nombre"
                   type="text"
                   placeholder="Nombre"
                   id="nombre"
                   required
                 />
                 <input
-                  class="form__input form__input-acerca-de-mi"
+                  class="form__popup-input form__input-acerca-de-mi"
                   type="text"
                   placeholder="Acerca de mí"
                   id="acerca-de-mi"
@@ -83,9 +83,45 @@
               <button
                 type="button"
                 class="form__button form__save-button"
+                id="guarda"
                 disabled
               >
                 Guardar
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <section class="popup popup_opened" id="placeModal">
+          <div class="popup__container">
+            <h2 class="popup__title">Nuevo lugar</h2>
+            <button class="popup__close-button">
+              <span class="popup__close-icon">&#x2715;</span>
+            </button>
+            <form class="form popup__form">
+              <fieldset class="form__fieldset form__fieldset-nuevo-lugar">
+                <input
+                  class="form__popup-input form__input-titulo"
+                  type="text"
+                  placeholder="Titulo"
+                  id="titulo"
+                  required
+                />
+                <input
+                  class="form__popup-input form__input-url"
+                  type="text"
+                  placeholder="Enlace a la imagen"
+                  id="url"
+                  required
+                />
+              </fieldset>
+              <button
+                type="button"
+                class="form__button form__save-button"
+                id="crea"
+                disabled
+              >
+                Crear
               </button>
             </form>
           </div>
@@ -98,12 +134,26 @@
     </div>
     <template id="element-template">
       <div class="element__single">
-        <img src="" alt="" class="element__image" />
+        <button class="element__image-button">
+          <img src="" alt="" class="element__image" />
+        </button>
+        <button class="element__delete-button">
+          <span class="element__delete-button-icon">🗑️</span>
+        </button>
         <div class="element__info">
           <p class="element__name"></p>
           <button class="element__like-button">
-            <span class="element__like-button-icon">&#x1f90d;</span>
+            <span class="element__like-button-icon">🤍</span>
           </button>
+        </div>
+      </div>
+      <div class="element__opened">
+        <div class="element__container">
+          <button class="element__close-button">
+            <span class="element__close-icon">&#x2715;</span>
+          </button>
+          <img src="" alt="" class="element__image-expanded" />
+          <p class="element__image-caption"></p>
         </div>
       </div>
     </template>

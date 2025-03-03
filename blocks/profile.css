@@ -29,7 +29,7 @@
   font-family: "Inter Regular", "Arial", sans-serif;
   font-size: 42px;
   line-height: 1.15;
-  max-width: 100%;
+  max-width: 87.5%;
 
   color: #fff;
   margin-right: 18px;
@@ -103,6 +103,10 @@
   .profile__name-button-group {
     width: 95%;
   }
+
+  .profile__user-name {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 800px) {
@@ -144,6 +148,7 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 36px;
+    max-width: 97.5%;
   }
 
   .profile__user-occupation {
@@ -152,7 +157,7 @@
   }
 
   .profile__name-button-group {
-    width: fit-content;
+    width: 100%;
   }
 
   .profile__add-button {
@@ -162,10 +167,6 @@
 
   .profile__add-button {
     margin-right: 0;
-  }
-
-  .profile__user-name {
-    max-width: 100%;
   }
 }
 
@@ -184,6 +185,7 @@
 
   .profile__user-name {
     font-size: 22px;
+    max-width: 100%;
   }
 
   .profile__edit-button {

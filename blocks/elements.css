@@ -14,15 +14,46 @@
   max-height: 361px;
   overflow: hidden;
   border-radius: 10px;
+  position: relative;
+}
+
+.element__delete-button {
+  border: none;
+  position: absolute;
+  top: 7.5px;
+  right: 7.5px;
+  background: none;
+  max-width: 24px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.element__delete-button-icon {
+  padding: 0;
+  margin: auto;
+  font-size: 20px;
+}
+
+.element__delete-button:hover {
+  opacity: 60%;
+}
+
+.element__image-button {
+  max-width: 282px;
+  max-height: 282px;
+  padding: 0;
+  margin: 0;
+  border: none;
+
+  cursor: pointer;
 }
 
 .element__image {
-  max-width: 600px;
   max-height: 282px;
-}
-
-.element__image-extended {
   min-width: 282px;
+  padding: 0;
+  margin: 0;
 }
 
 .element__info {
@@ -32,6 +63,7 @@
   padding-bottom: 30px;
   margin-left: 20px;
   margin-right: 15px;
+  margin-top: 0;
 }
 
 .element__name {
@@ -54,24 +86,78 @@
   max-width: 25px;
   max-height: 25px;
   fill: black;
-}
-
-.element__like-button-image {
-  padding: 0;
-  background-color: #53e;
+  cursor: pointer;
 }
 
 .element__like-button-icon {
   margin: auto;
   font-size: 20px;
-  cursor: pointer;
   position: relative;
   left: -3px;
   top: -0.5px;
 }
 
-.element__like-button-icon:hover {
+.element__like-button:hover {
   opacity: 60%;
+}
+
+.element__opened {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.element__container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.element__image-expanded {
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+.element__close-button {
+  max-width: 38px;
+  max-height: 38px;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background-color: transparent;
+  border: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.element__close-button:hover {
+  opacity: 60%;
+}
+
+.element__close-icon {
+  color: #fff;
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 0.85;
+  position: relative;
+  top: -5px;
+  right: 7px;
+}
+
+.element__image-caption {
+  color: #fff;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.2;
 }
 
 @media (max-width: 1000px) {
