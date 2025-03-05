@@ -120,6 +120,8 @@ closePopup(popups[1]);
 
 function openPopup(popup) {
   popup.classList.toggle("popup_opened");
+  popupInputs[0].value = userName.textContent;
+  popupInputs[1].value = userOccupation.textContent;
 }
 
 editButton.addEventListener("click", function () {
