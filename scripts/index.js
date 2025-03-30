@@ -1,14 +1,14 @@
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
-let popups = document.querySelectorAll(".popup");
-let closeButtons = document.querySelectorAll(".popup__close-button");
-let saveButtons = document.querySelectorAll(".form__save-button");
-let popupInputs = document.querySelectorAll(".form__popup-input");
+const popupForms = [document.forms.profileForm, document.forms.newPlaceForm];
+const closeButtons = document.querySelectorAll(".popup__close-button");
+const saveButtons = document.querySelectorAll(".form__save-button");
 let userName = document.querySelector(".profile__user-name");
 let userOccupation = document.querySelector(".profile__user-occupation");
 let elements = document.querySelector(".elements");
+const elementTemplate = document.querySelector("#element-template").content;
 
-const intialCards = [
+const initialCards = [
   {
     name: "Mill Valley, CA",
     link: "./images/mill-valley-ca.jpg",
@@ -35,10 +35,10 @@ const intialCards = [
   },
 ];
 
+// ESTABLECE LAS CARTAS INICIALES JUNTO CON SUS BOTONES
 function setInitialCards() {
-  intialCards.forEach(function (card) {
-    const elementTemplate = document.querySelector("#element-template").content;
-    const elementSingle = elementTemplate
+  initialCards.forEach(function (card) {
+    let elementSingle = elementTemplate
       .querySelector(".element__single")
       .cloneNode(true);
 
@@ -48,7 +48,7 @@ function setInitialCards() {
 
     elements.append(elementSingle);
 
-    const elementOpened = elementTemplate
+    let elementOpened = elementTemplate
       .querySelector(".element__opened")
       .cloneNode(true);
 
@@ -59,89 +59,129 @@ function setInitialCards() {
     elementOpened.id = card.name.replace(/[^a-zA-Z0-9]/g, "-");
 
     elements.append(elementOpened);
-  });
 
-  let imageButtons = document.querySelectorAll(".element__image-button");
-
-  imageButtons.forEach((imageButton) => {
-    imageButton.addEventListener("click", function (evt) {
-      let pressedButton = evt.currentTarget;
-
-      let elementId = pressedButton.querySelector(".element__image").alt;
-      const normalizedId = elementId.replace(/[^a-zA-Z0-9]/g, "-");
-
-      let selectedElement = elements.querySelector(`#${normalizedId}`);
-
-      if (selectedElement) {
-        selectedElement.style.display = "block";
-      } else {
-        console.error("Elemento no encontrado");
-      }
-    });
-  });
-
-  let closeElementButtons = document.querySelectorAll(".element__close-button");
-
-  closeElementButtons.forEach((closeButton) => {
-    closeButton.addEventListener("click", function (evt) {
-      let currentElement = evt.target.closest(".element__opened");
-      if (!currentElement) return;
-
-      currentElement.style.display = "none";
-    });
+    /*deleteElementButtons(elementSingle);
+    likeElementButtons(elementSingle);
+    openElementButtons(elementSingle);
+    closeElementButtons(elementOpened);*/
   });
 }
 
 setInitialCards();
 
-let deleteButtons = document.querySelectorAll(".element__delete-button");
-
-deleteButtons.forEach((deleteButton) => {
-  deleteButton.addEventListener("click", function (evt) {
-    let elementSingle = evt.target.closest(".element__single");
-    if (!elementSingle) return;
-
-    elementSingle.remove();
-  });
-});
-
-function closePopup(popup) {
-  popup.classList.remove("popup_opened");
-
-  let inputs = popup.querySelectorAll(".form__popup-input");
-  inputs.forEach((item) => (item.value = ""));
-
-  let saveButton = popup.querySelector(".form__save-button");
-  saveButton.setAttribute("disabled", "");
+// AGREGA LAS FUNCIONES PARA CERRAR LOS POPUPS
+function closePopup(form) {
+  let currentPopup = form.closest(".popup");
+  if (currentPopup) {
+    currentPopup.classList.remove("popup_opened");
+  }
 }
 
-closePopup(popups[0]);
-closePopup(popups[1]);
-
-function openPopup(popup) {
-  popup.classList.toggle("popup_opened");
-  popupInputs[0].value = userName.textContent;
-  popupInputs[1].value = userOccupation.textContent;
-}
-
-editButton.addEventListener("click", function () {
-  openPopup(popups[0]);
-});
-
-addButton.addEventListener("click", function () {
-  openPopup(popups[1]);
-});
+popupForms.forEach((popup) => closePopup(popup));
 
 closeButtons.forEach((button) => {
   button.addEventListener("click", function (evt) {
-    let popup = evt.target.closest(".popup");
-    if (popup) {
-      closePopup(popup);
+    let currentPopup = evt.target.closest(".popup");
+    if (currentPopup) {
+      closePopup(currentPopup);
     }
   });
 });
 
-popupInputs.forEach((inputField) => {
+document.addEventListener("keydown", function (evt) {
+  if (evt.key === "Escape") {
+    popupForms.forEach((form) => {
+      if (form.closest(".popup").classList.contains("popup_opened")) {
+        form.closest(".popup").classList.remove("popup_opened");
+      }
+    });
+  }
+});
+
+document.addEventListener("click", function (evt) {
+  if (evt.target.classList.contains("popup")) {
+    const form = evt.target.querySelector("form");
+    closePopup(form);
+  }
+});
+
+//AGREGA LAS FUNCIONES PARA ABRIR LOS POPUPS
+
+function openPopup(form) {
+  resetErrorMessages(form.querySelectorAll(".form__error_visible"));
+  cleanErrorBorder(form.querySelectorAll(".form__popup-input"));
+
+  let currentPopup = form.closest(".popup");
+  if (!currentPopup) return;
+
+  currentPopup.classList.toggle("popup_opened");
+  if (form.name === "profileForm") {
+    form.elements.personName.value = userName.textContent;
+    form.elements.personJob.value = userOccupation.textContent;
+  } else {
+    form.reset();
+    form.reset();
+  }
+}
+
+editButton.addEventListener("click", function () {
+  openPopup(popupForms[0]);
+});
+
+addButton.addEventListener("click", function () {
+  openPopup(popupForms[1]);
+});
+
+const resetErrorMessages = (errorMessagesArr) => {
+  errorMessagesArr.forEach((message) => {
+    message.style.display = "none";
+  });
+};
+
+const cleanErrorBorder = (inputsArr) => {
+  inputsArr.forEach((input) => {
+    input.classList.remove("form__input_type_error");
+  });
+};
+
+//EJECUTA LA VALIDACION DE LOS FORMULARIOS
+
+function addDetectors(formsArray) {
+  formsArray.forEach((form) => {
+    const inputsList = form.querySelectorAll(".form__popup-input");
+    inputsList.forEach((input) => {
+      input.addEventListener("input", function () {
+        checkValidity(form, input);
+      });
+    });
+  });
+}
+
+addDetectors(popupForms);
+
+const checkValidity = (form, element) => {
+  if (!element.validity.valid) {
+    showInputError(form, element, element.validationMessage);
+  } else {
+    hideInputError(form, element);
+  }
+};
+
+function showInputError(form, element, errorMessage) {
+  const errorElement = element;
+  errorElement.classList.add("form__input_type_error");
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add("form__input_type_error");
+}
+
+/*let currentSaveButton = form.querySelector(".form__save-button");
+if (currentSaveButton) {
+  currentSaveButton.setAttribute("disabled", "");
+}*/
+
+//REALIZA LA VALIDACION DE LOS INPUTS DE LOS POPUPS
+
+/*popupInputs.forEach((inputField) => {
   inputField.addEventListener("keyup", function (evt) {
     let form = evt.target.closest(".form");
     if (!form) return;
@@ -160,9 +200,9 @@ popupInputs.forEach((inputField) => {
       currentButton.setAttribute("disabled", "");
     }
   });
-});
+});*/
 
-saveButtons.forEach((saveButton) => {
+/*saveButtons.forEach((saveButton) => {
   saveButton.addEventListener("click", function (evt) {
     let form = evt.target.closest(".form");
     if (!form) return;
@@ -194,9 +234,7 @@ saveButtons.forEach((saveButton) => {
         currentFormInputs[0].value !== "" &&
         currentFormInputs[1].value !== ""
       ) {
-        const elementTemplate =
-          document.querySelector("#element-template").content;
-        const elementSingle = elementTemplate
+        let elementSingle = elementTemplate
           .querySelector(".element__single")
           .cloneNode(true);
 
@@ -209,18 +247,7 @@ saveButtons.forEach((saveButton) => {
 
         elements.prepend(elementSingle);
 
-        const newDeleteButton = elementSingle.querySelector(
-          ".element__delete-button"
-        );
-        newDeleteButton.addEventListener("click", function (evt) {
-          let elementSingle = evt.target.closest(".element__single");
-          if (!elementSingle) return;
-          elementSingle.remove();
-        });
-
-        //agregar cartas abiertas
-
-        const elementOpened = elementTemplate
+        let elementOpened = elementTemplate
           .querySelector(".element__opened")
           .cloneNode(true);
 
@@ -237,38 +264,11 @@ saveButtons.forEach((saveButton) => {
 
         elements.append(elementOpened);
 
-        //agregar botones de apertura en cartas nuevas
-
-        let imageButton = elementSingle.querySelector(".element__image-button");
-        imageButton.addEventListener("click", function (evt) {
-          let selectElement = evt.target.closest(".element__single");
-          let elementId = selectElement.querySelector(".element__image").alt;
-          let normalizedId = elementId.replace(/[^a-zA-Z0-9]/g, "-");
-
-          let openElement = elements.querySelector(`#${normalizedId}`);
-
-          if (openElement) {
-            openElement.style.display = "block";
-          } else {
-            console.error("Elemento no encontrado");
-          }
-        });
-
-        // agregar boton de cerrado de carta nueva
-
-        let closeElementButton = elementOpened.querySelector(
-          ".element__close-button"
-        );
-
-        closeElementButton.addEventListener("click", function (evt) {
-          let currentElement = evt.target.closest(".element__opened");
-          if (!currentElement) return;
-
-          currentElement.style.display = "none";
-        });
-
-        // desplegar mensajes de alarma si no estan llenos los datos
-      } else if (currentFormInputs[0].value == "") {
+        /*deleteElementButtons(elementSingle);
+        likeElementButtons(elementSingle);
+        openElementButtons(elementSingle);
+        closeElementButtons(elementOpened);*/
+/*} else if (currentFormInputs[0].value == "") {
         alert("Falta la URL de la imagen");
       } else {
         alert("Falta el nombre de la imagen");
@@ -276,12 +276,53 @@ saveButtons.forEach((saveButton) => {
     }
 
     if (popup) {
-      closePopup(popup);
+      closePopup(popups[1]);
     }
   });
-});
+});*/
 
-// agregar funcion de boton de me gusta
+// AGREGAR FUNCIONES PARA LOS DISTINTOS BOTONES DE LOS ELEMENTOS SINGLE Y OPENED
+/*const openElementButtons = (toOpenElement) => {
+  let imageButton = toOpenElement.querySelector(".element__image-button");
+
+  imageButton.addEventListener("click", function (evt) {
+    let selectedElement = evt.target.closest(".element__single");
+    let elementId = selectedElement.querySelector(".element__image").alt;
+    let normalizedId = elementId.replace(/[^a-zA-Z0-9]/g, "-");
+
+    let openElement = elements.querySelector(`#${normalizedId}`);
+
+    if (openElement) {
+      openElement.style.display = "block";
+    } else {
+      console.error("Elemento no encontrado");
+    }
+  });
+};
+
+const closeElementButtons = (toCloseElement) => {
+  let closeElementButton = toCloseElement.querySelector(
+    ".element__close-button"
+  );
+
+  closeElementButton.addEventListener("click", function (evt) {
+    let currentElement = evt.target.closest(".element__opened");
+    if (!currentElement) return;
+
+    currentElement.style.display = "none";
+  });
+};
+
+const deleteElementButtons = (toDeleteElement) => {
+  const deleteButton = toDeleteElement.querySelector(".element__delete-button");
+
+  deleteButton.addEventListener("click", function (evt) {
+    let elementSelected = evt.target.closest(".element__single");
+    if (!elementSelected) return;
+
+    elementSelected.remove();
+  });
+};
 
 elements.addEventListener("click", function (evt) {
   if (evt.target.closest(".element__like-button")) {
@@ -294,4 +335,4 @@ elements.addEventListener("click", function (evt) {
       likeIcon.textContent = "🤍";
     }
   }
-});
+});*/

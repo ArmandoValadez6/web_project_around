@@ -63,22 +63,30 @@
             <button class="popup__close-button">
               <span class="popup__close-icon">&#x2715;</span>
             </button>
-            <form class="form popup__form">
+            <form class="form popup__form" name="profileForm" novalidate>
               <fieldset class="form__fieldset form__fieldset-profile-info">
                 <input
-                  class="form__popup-input form__input-nombre"
+                  class="form__popup-input form__input-nombre form__input_type_error"
                   type="text"
                   placeholder="Nombre"
                   id="nombre"
+                  name="personName"
+                  minlength="2"
+                  maxlength="40"
                   required
                 />
+                <span class="form__error_visible">nsfgn</span>
                 <input
-                  class="form__popup-input form__input-acerca-de-mi"
+                  class="form__popup-input form__input-acerca-de-mi form__input_type_error"
                   type="text"
                   placeholder="Acerca de mí"
                   id="acerca-de-mi"
+                  name="personJob"
+                  minlength="2"
+                  maxlength="200"
                   required
                 />
+                <span class="form__error_visible">gwrgrew</span>
               </fieldset>
               <button
                 type="button"
@@ -98,22 +106,29 @@
             <button class="popup__close-button">
               <span class="popup__close-icon">&#x2715;</span>
             </button>
-            <form class="form popup__form">
+            <form class="form popup__form" name="newPlaceForm" novalidate>
               <fieldset class="form__fieldset form__fieldset-nuevo-lugar">
                 <input
-                  class="form__popup-input form__input-titulo"
+                  class="form__popup-input form__input-titulo form__input_type_error"
                   type="text"
                   placeholder="Titulo"
                   id="titulo"
+                  name="newPlace"
+                  minlength="2"
+                  maxlength="30"
                   required
                 />
+                <span class="form__error_visible">fhgewrg</span>
                 <input
-                  class="form__popup-input form__input-url"
+                  class="form__popup-input form__input-url form__input_type_error"
                   type="text"
                   placeholder="Enlace a la imagen"
                   id="url"
+                  name="npImageLink"
+                  type="URL"
                   required
                 />
+                <span class="form__error_visible">sdgbn</span>
               </fieldset>
               <button
                 type="button"
