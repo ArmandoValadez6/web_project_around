@@ -60,10 +60,10 @@ function setInitialCards() {
 
     elements.append(elementOpened);
 
-    /*deleteElementButtons(elementSingle);
+    deleteElementButtons(elementSingle);
     likeElementButtons(elementSingle);
     openElementButtons(elementSingle);
-    closeElementButtons(elementOpened);*/
+    closeElementButtons(elementOpened);
   });
 }
 
@@ -95,6 +95,12 @@ document.addEventListener("keydown", function (evt) {
         form.closest(".popup").classList.remove("popup_opened");
       }
     });
+
+    const opElemArr = Array.from(document.querySelectorAll(".element__opened"));
+
+    opElemArr.forEach((element) => {
+      element.style.display = "none";
+    });
   }
 });
 
@@ -102,6 +108,14 @@ document.addEventListener("click", function (evt) {
   if (evt.target.classList.contains("popup")) {
     const form = evt.target.querySelector("form");
     closePopup(form);
+  }
+
+  if (evt.target.classList.contains("element__opened")) {
+    const opElemArr = Array.from(document.querySelectorAll(".element__opened"));
+
+    opElemArr.forEach((element) => {
+      element.style.display = "none";
+    });
   }
 });
 
@@ -120,7 +134,7 @@ function openPopup(form) {
     form.elements.personJob.value = userOccupation.textContent;
   } else {
     form.reset();
-    form.reset();
+    toggleSaveButton(form, false);
   }
 }
 
@@ -150,139 +164,108 @@ function addDetectors(formsArray) {
   formsArray.forEach((form) => {
     const inputsList = form.querySelectorAll(".form__popup-input");
     inputsList.forEach((input) => {
-      input.addEventListener("input", function () {
-        checkValidity(form, input);
-      });
+      input.addEventListener("input", checkValidity);
     });
   });
 }
 
+const checkValidity = (event) => {
+  const form = event.target.closest(".form");
+  const inputs = Array.from(form.querySelectorAll("input"));
+  const element = event.target;
+  const spanErrorID = form.querySelector(`#${element.id}-error`);
+
+  if (!element.validity.valid) {
+    showInputError(spanErrorID, element, element.validationMessage);
+  } else {
+    hideInputError(spanErrorID, element);
+  }
+
+  const validForm = inputs.every((input) => input.validity.valid);
+
+  toggleSaveButton(form, validForm);
+};
+
 addDetectors(popupForms);
 
-const checkValidity = (form, element) => {
-  if (!element.validity.valid) {
-    showInputError(form, element, element.validationMessage);
+function showInputError(showError, opElement, errorMessage) {
+  opElement.classList.add("form__input_type_error");
+  showError.textContent = errorMessage;
+  showError.style.display = "block";
+}
+
+function hideInputError(showError, opElement) {
+  opElement.classList.remove("form__input_type_error");
+  showError.textContent = "";
+  showError.style.display = "none";
+}
+
+const toggleSaveButton = (form, validForm) => {
+  const currentButton = form.querySelector(".form__save-button");
+  if (validForm) {
+    currentButton.removeAttribute("disabled");
   } else {
-    hideInputError(form, element);
+    currentButton.setAttribute("disabled", "");
   }
 };
 
-function showInputError(form, element, errorMessage) {
-  const errorElement = element;
-  errorElement.classList.add("form__input_type_error");
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add("form__input_type_error");
+//EJECUTA LA FUNCION DE LOS BOTONES GUARDAR Y CREAR
+
+const saveBtnList = () => {
+  saveButtons.forEach((saveButton) => {
+    saveButton.addEventListener("click", btnFunction);
+  });
+};
+
+saveBtnList();
+
+function btnFunction(event) {
+  const form = event.target.closest(".form");
+  let currentFormInputs = form.querySelectorAll(".form__popup-input");
+  const crntPopup = form.closest(".popup");
+
+  if (event.target.id === "guarda") {
+    userName.textContent = currentFormInputs[0].value;
+    userOccupation.textContent = currentFormInputs[1].value;
+  } else {
+    const elementSingle = elementTemplate
+      .querySelector(".element__single")
+      .cloneNode(true);
+
+    elementSingle.querySelector(".element__image").src =
+      currentFormInputs[1].value;
+    elementSingle.querySelector(".element__image").alt =
+      currentFormInputs[0].value;
+    elementSingle.querySelector(".element__name").textContent =
+      currentFormInputs[0].value;
+
+    elements.prepend(elementSingle);
+
+    let elementOpened = elementTemplate
+      .querySelector(".element__opened")
+      .cloneNode(true);
+
+    elementOpened.querySelector(".element__image-expanded").src =
+      currentFormInputs[1].value;
+    elementOpened.querySelector(".element__image-expanded").alt =
+      currentFormInputs[0].value;
+    elementOpened.querySelector(".element__image-caption").textContent =
+      currentFormInputs[0].value;
+    elementOpened.id = currentFormInputs[0].value.replace(/[^a-zA-Z0-9]/g, "-");
+    elements.append(elementOpened);
+
+    deleteElementButtons(elementSingle);
+    likeElementButtons(elementSingle);
+    openElementButtons(elementSingle);
+    closeElementButtons(elementOpened);
+  }
+  if (crntPopup) {
+    closePopup(crntPopup);
+  }
 }
 
-/*let currentSaveButton = form.querySelector(".form__save-button");
-if (currentSaveButton) {
-  currentSaveButton.setAttribute("disabled", "");
-}*/
-
-//REALIZA LA VALIDACION DE LOS INPUTS DE LOS POPUPS
-
-/*popupInputs.forEach((inputField) => {
-  inputField.addEventListener("keyup", function (evt) {
-    let form = evt.target.closest(".form");
-    if (!form) return;
-
-    let currentButton = form.querySelector(".form__save-button");
-    if (!currentButton) return;
-
-    let currentFormInputs = form.querySelectorAll(".form__popup-input");
-
-    if (
-      currentFormInputs[0].value !== "" ||
-      currentFormInputs[1].value !== ""
-    ) {
-      currentButton.removeAttribute("disabled");
-    } else {
-      currentButton.setAttribute("disabled", "");
-    }
-  });
-});*/
-
-/*saveButtons.forEach((saveButton) => {
-  saveButton.addEventListener("click", function (evt) {
-    let form = evt.target.closest(".form");
-    if (!form) return;
-
-    let currentButton = form.querySelector(".form__save-button");
-    if (!currentButton) return;
-
-    let currentFormInputs = form.querySelectorAll(".form__popup-input");
-    let popup = form.closest(".popup");
-
-    if (evt.target.id === "guarda") {
-      if (
-        currentFormInputs[0].value !== "" &&
-        currentFormInputs[1].value !== ""
-      ) {
-        userName.textContent = currentFormInputs[0].value;
-        userOccupation.textContent = currentFormInputs[1].value;
-      } else if (currentFormInputs[0].value !== "") {
-        userName.textContent = currentFormInputs[0].value;
-      } else {
-        userOccupation.textContent = currentFormInputs[1].value;
-      }
-
-      if (popup) {
-        closePopup(popup);
-      }
-    } else {
-      if (
-        currentFormInputs[0].value !== "" &&
-        currentFormInputs[1].value !== ""
-      ) {
-        let elementSingle = elementTemplate
-          .querySelector(".element__single")
-          .cloneNode(true);
-
-        elementSingle.querySelector(".element__image").src =
-          currentFormInputs[1].value;
-        elementSingle.querySelector(".element__image").alt =
-          currentFormInputs[0].value;
-        elementSingle.querySelector(".element__name").textContent =
-          currentFormInputs[0].value;
-
-        elements.prepend(elementSingle);
-
-        let elementOpened = elementTemplate
-          .querySelector(".element__opened")
-          .cloneNode(true);
-
-        elementOpened.querySelector(".element__image-expanded").src =
-          currentFormInputs[1].value;
-        elementOpened.querySelector(".element__image-expanded").alt =
-          currentFormInputs[0].value;
-        elementOpened.querySelector(".element__image-caption").textContent =
-          currentFormInputs[0].value;
-        elementOpened.id = currentFormInputs[0].value.replace(
-          /[^a-zA-Z0-9]/g,
-          "-"
-        );
-
-        elements.append(elementOpened);
-
-        /*deleteElementButtons(elementSingle);
-        likeElementButtons(elementSingle);
-        openElementButtons(elementSingle);
-        closeElementButtons(elementOpened);*/
-/*} else if (currentFormInputs[0].value == "") {
-        alert("Falta la URL de la imagen");
-      } else {
-        alert("Falta el nombre de la imagen");
-      }
-    }
-
-    if (popup) {
-      closePopup(popups[1]);
-    }
-  });
-});*/
-
-// AGREGAR FUNCIONES PARA LOS DISTINTOS BOTONES DE LOS ELEMENTOS SINGLE Y OPENED
-/*const openElementButtons = (toOpenElement) => {
+//DEFINE FUNCIONES PARA LOS DISTINTOS BOTONES DE LOS ELEMENTOS SINGLE Y OPENED
+function openElementButtons(toOpenElement) {
   let imageButton = toOpenElement.querySelector(".element__image-button");
 
   imageButton.addEventListener("click", function (evt) {
@@ -298,9 +281,9 @@ if (currentSaveButton) {
       console.error("Elemento no encontrado");
     }
   });
-};
+}
 
-const closeElementButtons = (toCloseElement) => {
+function closeElementButtons(toCloseElement) {
   let closeElementButton = toCloseElement.querySelector(
     ".element__close-button"
   );
@@ -311,9 +294,9 @@ const closeElementButtons = (toCloseElement) => {
 
     currentElement.style.display = "none";
   });
-};
+}
 
-const deleteElementButtons = (toDeleteElement) => {
+function deleteElementButtons(toDeleteElement) {
   const deleteButton = toDeleteElement.querySelector(".element__delete-button");
 
   deleteButton.addEventListener("click", function (evt) {
@@ -322,17 +305,17 @@ const deleteElementButtons = (toDeleteElement) => {
 
     elementSelected.remove();
   });
-};
+}
 
-elements.addEventListener("click", function (evt) {
-  if (evt.target.closest(".element__like-button")) {
-    let likeButton = evt.target.closest(".element__like-button");
-    let likeIcon = likeButton.querySelector(".element__like-button-icon");
+function likeElementButtons(likedElement) {
+  let likeButton = likedElement.querySelector(".element__like-button");
+  let likeIcon = likeButton.querySelector(".element__like-button-icon");
 
+  likeButton.addEventListener("click", () => {
     if (likeIcon.textContent === "🤍") {
       likeIcon.textContent = "🖤";
     } else {
       likeIcon.textContent = "🤍";
     }
-  }
-});*/
+  });
+}

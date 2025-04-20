@@ -1,3 +1,7 @@
+.form__fieldset {
+  width: 358px;
+}
+
 .form__fieldset-profile-info {
   border: 0;
   padding: 0;
@@ -17,10 +21,6 @@
   font-size: 14px;
   font-family: "Inter Regular", "Arial", sans-serif;
   padding-bottom: 13px;
-}
-
-.form__popup-input_invalid {
-  border-bottom: 1px solid #ff0000;
 }
 
 .form__save-button {
@@ -58,4 +58,14 @@
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0;
+  display: none;
+  margin: 0;
+  padding: 0;
+  max-height: 0px;
+}
+
+@media (max-width: 700px) {
+  .form__fieldset {
+    width: auto;
+  }
 }
