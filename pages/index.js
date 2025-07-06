@@ -12,6 +12,7 @@ export { userName, userOccupation, elmntTemplate, elements };
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 import { closePopup, closeOpndElmnt, openPopup, btnFunction } from "./utils.js";
+import Section from "../scripts/Section.js";
 
 const initialCards = [
   {
@@ -41,6 +42,10 @@ const initialCards = [
 ];
 
 // ESTABLECE LAS CARTAS INICIALES JUNTO CON SUS BOTONES
+const cardBuilder = new Section({arr: initialCards, renderer: (item) => }){
+    const card = new Card (){}
+}
+
 function setInitialCards() {
   initialCards.forEach(function (tarjeta) {
     new Card(tarjeta.name, tarjeta.link, elmntTemplate, elements);
