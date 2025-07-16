@@ -42,7 +42,7 @@ const initialCards = [
 ];
 
 // ESTABLECE LAS CARTAS INICIALES JUNTO CON SUS BOTONES
-const cardBuilder = new Section({arr: initialCards, renderer: (item) => }){
+/*const cardBuilder = new Section({arr: initialCards, renderer: (item) => ; }){
     const card = new Card (){}
 }
 
@@ -50,7 +50,7 @@ function setInitialCards() {
   initialCards.forEach(function (tarjeta) {
     new Card(tarjeta.name, tarjeta.link, elmntTemplate, elements);
   });
-}
+}*/
 
 setInitialCards();
 

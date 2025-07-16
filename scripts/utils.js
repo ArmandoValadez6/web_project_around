@@ -2,18 +2,6 @@
 import { userName, userOccupation, elmntTemplate, elements } from "./index.js";
 import Card from "./Card.js";
 
-export function closePopup(currentPopup) {
-  if (currentPopup) {
-    currentPopup.classList.remove("popup_opened");
-  }
-}
-
-export function closeOpndElmnt(slctnArr) {
-  slctnArr.forEach((element) => {
-    element.style.display = "none";
-  });
-}
-
 //AGREGA LAS FUNCIONES PARA ABRIR LOS POPUPS
 
 export function openPopup(form) {
@@ -66,5 +54,27 @@ export function btnFunction(event) {
   if (form) {
     const crntPopup = form.closest(".popup");
     closePopup(crntPopup);
+  }
+}
+
+//ESTABLECE LA FUNCION DE CALLBACK PARA EL EVENTO SUBMIT.+
+//ESTA FUNCION SE EXPORTARA A INDEX.JS
+//INDEX.JS LA INTRODUCIRA EN EL COSTRUCTOR PARA LA CREACION DE LAS CLASES
+export function handleSubmitEvt(evt, inputValues) {
+  const form = evt.target.closest(".form");
+
+  if (evt.target.id === "guarda") {
+    userName.textContent = inputValues.personName;
+    userOccupation.textContent = inputValues.personJob;
+  } else {
+    new Card(
+      inputValues.newPlace,
+      inputValues.npImageLink,
+      elmntTemplate,
+      elements
+    );
+  }
+  if (form) {
+    this.close("popup_opened", ".form");
   }
 }
