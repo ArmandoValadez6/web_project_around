@@ -1,6 +1,6 @@
 # Tripleten web_project_around
 
-Proyecto del 10mo Sprint
+Proyecto del 11vo Sprint
 
 Uso de clases para POO y JavaScript modular.
 
