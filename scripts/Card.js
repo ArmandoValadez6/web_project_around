@@ -1,93 +1,69 @@
 export default class Card {
-  constructor(imName, imURL, elmntTemplate, container) {
-    this._imName = imName;
-    this._imURL = imURL;
-    this._elmntTemplate = elmntTemplate;
-    this._container = container;
-    this.CreateCard();
+  constructor(
+    { name, link },
+    elementTemplate,
+    singleElementSelector,
+    handleCardClick,
+    handleDeleteClick
+  ) {
+    this._name = name;
+    this._link = link;
+    this._elementTemplate = elementTemplate;
+    this._singleElementSelector = this._elementTemplate
+      .querySelector(singleElementSelector)
+      .cloneNode(true);
+    this._handleCardClick = handleCardClick;
+    this._handleDeleteClick = handleDeleteClick;
   }
 
-  CreateCard() {
-    this._elmntSingle = this._elmntTemplate
-      .querySelector(".element__single")
-      .cloneNode(true);
+  CreateCard(
+    { cardImageSelector, cardCaptionSelector },
+    { likeButtonSelector, deleteButtonSelector, imageButtonSelector },
+    likeIconSelector
+  ) {
+    this._newCard = this._singleElementSelector;
 
-    this._elmntSingle.querySelector(".element__image").src = this._imURL;
-    this._elmntSingle.querySelector(".element__image").alt = this._imName;
-    this._elmntSingle.querySelector(".element__name").textContent =
-      this._imName;
+    this._newCard.querySelector(cardImageSelector).src = this._link;
+    this._newCard.querySelector(cardImageSelector).alt = this._name;
+    this._newCard.querySelector(cardCaptionSelector).textContent = this._name;
 
-    this._container.append(this._elmntSingle);
+    this._AddLikeBtn(this._newCard, likeButtonSelector, likeIconSelector);
+    this._AddDeleteBtn(this._newCard, deleteButtonSelector);
+    this._AddOpenBtn(
+      this._newCard,
+      imageButtonSelector,
+      this._name,
+      this._link
+    );
 
-    this._elmntOpened = this._elmntTemplate
-      .querySelector(".element__opened")
-      .cloneNode(true);
-
-    this._elmntOpened.querySelector(".element__image-expanded").src =
-      this._imURL;
-    this._elmntOpened.querySelector(".element__image-expanded").alt =
-      this._imName;
-    this._elmntOpened.querySelector(".element__image-caption").textContent =
-      this._imName;
-
-    this._elmntOpened.id = this._imName.replace(/[^a-zA-Z0-9]/g, "-");
-
-    this._container.append(this._elmntOpened);
-
-    this._AddLikeBtn(this._elmntSingle);
-    this._AddDeleteBtn(this._elmntSingle);
-    this._AddOpenBtn(this._elmntSingle);
-    this._AddCloseFunction(this._elmntOpened);
+    return this._newCard;
   }
 
-  _AddLikeBtn(likedElmnt) {
-    this._likeBtn = likedElmnt.querySelector(".element__like-button");
-    this._likeIcon = this._likeBtn.querySelector(".element__like-button-icon");
+  _AddLikeBtn(newCard, likeButtonSelector, likeIconSelector) {
+    this._likeBtn = newCard.querySelector(likeButtonSelector);
+    this._likeIconSelector = this._likeBtn.querySelector(likeIconSelector);
 
     this._handleLikeClick = () => {
-      if (this._likeIcon.textContent === "🤍") {
-        this._likeIcon.textContent = "🖤";
+      if (this._likeIconSelector.textContent === "🤍") {
+        this._likeIconSelector.textContent = "🖤";
       } else {
-        this._likeIcon.textContent = "🤍";
+        this._likeIconSelector.textContent = "🤍";
       }
     };
-
     this._likeBtn.addEventListener("click", this._handleLikeClick);
   }
 
-  _AddDeleteBtn(toDeleteElmnt) {
-    this._deleteBtn = toDeleteElmnt.querySelector(".element__delete-button");
-
-    this._handleDeleteClick = () => {
-      this._elmntSingle.remove();
-      this._elmntOpened.remove();
-
-      this._likeBtn.removeEventListener("click", this._handleLikeClick);
-      this._imageBtn.removeEventListener("click", this._handleOpenClick);
-      this._deleteBtn.removeEventListener("click", this._handleDeleteClick);
-      this._closeElmntBtn.removeEventListener("click", this._handleCloseBtn);
-    };
-
-    this._deleteBtn.addEventListener("click", this._handleDeleteClick);
+  _AddDeleteBtn(toDeleteElmnt, deleteButtonSelector) {
+    this._deleteBtn = toDeleteElmnt.querySelector(deleteButtonSelector);
+    this._deleteBtn.addEventListener("click", () => {
+      this._handleDeleteClick(this._newCard);
+    });
   }
 
-  _AddOpenBtn(toOpenElmnt) {
-    this._imageBtn = toOpenElmnt.querySelector(".element__image-button");
-
-    this._handleOpenClick = () => {
-      this._elmntOpened.style.display = "block";
-    };
-
-    this._imageBtn.addEventListener("click", this._handleOpenClick);
-  }
-
-  _AddCloseFunction(toCloseElmnt) {
-    this._closeElmntBtn = toCloseElmnt.querySelector(".element__close-button");
-
-    this._handleCloseBtn = () => {
-      toCloseElmnt.style.display = "none";
-    };
-
-    this._closeElmntBtn.addEventListener("click", this._handleCloseBtn);
+  _AddOpenBtn(toOpenElmnt, imageButtonSelector, name, link) {
+    this._imageBtn = toOpenElmnt.querySelector(imageButtonSelector);
+    this._imageBtn.addEventListener("click", () => {
+      this._handleCardClick({ name, link });
+    });
   }
 }

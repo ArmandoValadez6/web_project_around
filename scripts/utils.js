@@ -1,80 +1,95 @@
-// AGREGA LAS FUNCIONES PARA CERRAR LOS POPUPS Y ELEMENTOS ABIERTOS
-import { userName, userOccupation, elmntTemplate, elements } from "./index.js";
-import Card from "./Card.js";
+const popupWithImageSelector = "#popup-with-image";
+const popupImageSelectors = {
+  imageSelector: ".element__image-expanded",
+  captionSelector: ".element__image-caption",
+};
+const openedElementClass = "element_opened";
 
-//AGREGA LAS FUNCIONES PARA ABRIR LOS POPUPS
+const closedElementClass = "element_closed";
+const elementCloseButtonSelector = ".element__close-button";
 
-export function openPopup(form) {
-  resetErrorMessages(form.querySelectorAll(".form__error_visible"));
-  cleanErrorBorder(form.querySelectorAll(".form__popup-input"));
+const initialCards = [
+  {
+    name: "Mill Valley, CA",
+    link: "./images/mill-valley-ca.jpg",
+  },
+  {
+    name: "Niagara Falls, NY",
+    link: "./images/niagara-falls-ny.jpg",
+  },
+  {
+    name: "Grand Canyon, AZ",
+    link: "./images/page-az.jpg",
+  },
+  {
+    name: "Yellowstone, Wy",
+    link: "./images/yellowstone-wy.jpg",
+  },
+  {
+    name: "Lincoln, Nh",
+    link: "./images/lincoln-nh.jpg",
+  },
+  {
+    name: "Traper Creek, Ak",
+    link: "./images/trapper-creek-ak.jpg",
+  },
+];
 
-  let currentPopup = form.closest(".popup");
-  if (!currentPopup) return;
+const elements = ".elements";
+const elementTemplate = document.querySelector("#element-template").content;
+const singleElementSelector = ".element__single";
 
-  currentPopup.classList.toggle("popup_opened");
-  if (form.name === "profileForm") {
-    form.elements.personName.value = userName.textContent;
-    form.elements.personJob.value = userOccupation.textContent;
-  } else {
-    form.reset();
-    const currentButton = form.querySelector(".form__save-button");
-    currentButton.setAttribute("disabled", "");
-  }
-}
-
-const resetErrorMessages = (errorMessagesArr) => {
-  errorMessagesArr.forEach((message) => {
-    message.style.display = "none";
-  });
+const cardDataSelectors = {
+  cardImageSelector: ".element__image",
+  cardCaptionSelector: ".element__name",
 };
 
-const cleanErrorBorder = (inputsArr) => {
-  inputsArr.forEach((input) => {
-    input.classList.remove("form__input_type_error");
-  });
+const cardButtonsSelectors = {
+  likeButtonSelector: ".element__like-button",
+  deleteButtonSelector: ".element__delete-button",
+  imageButtonSelector: ".element__image-button",
+};
+const likeIconSelector = ".element__like-button-icon";
+
+const popupCloseButtonSelector = ".popup__close-button";
+const formSelector = ".form";
+const inputSelector = ".form__popup-input";
+const saveButtonSelector = ".form__save-button";
+
+const editButton = document.querySelector(".profile__edit-button");
+const addButton = document.querySelector(".profile__add-button");
+
+const userData = {
+  userNameSelector: ".profile__user-name",
+  userJobSelector: ".profile__user-occupation",
+};
+const errorMesageClass = "form__input_type_error";
+
+export {
+  popupWithImageSelector,
+  popupImageSelectors,
+  openedElementClass,
+  closedElementClass,
+  elementCloseButtonSelector,
 };
 
-//EJECUTA LA FUNCION DE LOS BOTONES GUARDAR Y CREAR
+export {
+  initialCards,
+  cardDataSelectors,
+  cardButtonsSelectors,
+  likeIconSelector,
+  elements,
+  elementTemplate,
+  singleElementSelector,
+};
 
-export function btnFunction(event) {
-  const form = event.target.closest(".form");
-  const currentFormInputs = form.querySelectorAll(".form__popup-input");
+export {
+  popupCloseButtonSelector,
+  formSelector,
+  inputSelector,
+  saveButtonSelector,
+};
 
-  if (event.target.id === "guarda") {
-    userName.textContent = currentFormInputs[0].value;
-    userOccupation.textContent = currentFormInputs[1].value;
-  } else {
-    new Card(
-      currentFormInputs[0].value,
-      currentFormInputs[1].value,
-      elmntTemplate,
-      elements
-    );
-  }
-  if (form) {
-    const crntPopup = form.closest(".popup");
-    closePopup(crntPopup);
-  }
-}
+export { editButton, addButton };
 
-//ESTABLECE LA FUNCION DE CALLBACK PARA EL EVENTO SUBMIT.+
-//ESTA FUNCION SE EXPORTARA A INDEX.JS
-//INDEX.JS LA INTRODUCIRA EN EL COSTRUCTOR PARA LA CREACION DE LAS CLASES
-export function handleSubmitEvt(evt, inputValues) {
-  const form = evt.target.closest(".form");
-
-  if (evt.target.id === "guarda") {
-    userName.textContent = inputValues.personName;
-    userOccupation.textContent = inputValues.personJob;
-  } else {
-    new Card(
-      inputValues.newPlace,
-      inputValues.npImageLink,
-      elmntTemplate,
-      elements
-    );
-  }
-  if (form) {
-    this.close("popup_opened", ".form");
-  }
-}
+export { errorMesageClass, userData };

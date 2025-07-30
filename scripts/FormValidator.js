@@ -1,7 +1,8 @@
 export default class FormValidator {
-  constructor(confObjt, valInput) {
+  constructor(confObjt, valInput, errorMesageClass) {
     this._confObjt = confObjt;
     this._valInput = valInput;
+    this._errorMesageClass = errorMesageClass;
   }
 
   EnableValidation(evt) {
@@ -21,14 +22,14 @@ export default class FormValidator {
 
   _ShowInputError() {
     const errorSpan = this._confObjt.spanErrors.get(this._valInput.id);
-    this._valInput.classList.add("form__input_type_error");
+    this._valInput.classList.add(this._errorMesageClass);
     errorSpan.textContent = this._valInput.validationMessage;
     errorSpan.style.display = "block";
   }
 
   _HideInputError() {
     const errorSpan = this._confObjt.spanErrors.get(this._valInput.id);
-    this._valInput.classList.remove("form__input_type_error");
+    this._valInput.classList.remove(this._errorMesageClass);
     errorSpan.textContent = "";
     errorSpan.style.display = "none";
   }
@@ -39,5 +40,13 @@ export default class FormValidator {
     } else {
       this._confObjt.crntBtn.setAttribute("disabled", "");
     }
+  }
+
+  resetValidation() {
+    this._confObjt.inputs.forEach((input) => {
+      this._valInput = input;
+      this._HideInputError();
+    });
+    this._ToggleSaveButton(false);
   }
 }

@@ -1,156 +1,176 @@
-const editButton = document.querySelector(".profile__edit-button");
-const addButton = document.querySelector(".profile__add-button");
-const popupForms = [document.forms.profileForm, document.forms.newPlaceForm];
-const closeButtons = document.querySelectorAll(".popup__close-button");
-const saveButtons = document.querySelectorAll(".form__save-button");
-const userName = document.querySelector(".profile__user-name");
-const userOccupation = document.querySelector(".profile__user-occupation");
-const elements = document.querySelector(".elements");
-const elmntTemplate = document.querySelector("#element-template").content;
-export { userName, userOccupation, elmntTemplate, elements };
-
-import Card from "./Card.js";
-import FormValidator from "./FormValidator.js";
-import { closePopup, closeOpndElmnt, openPopup, btnFunction } from "./utils.js";
+import Card from "../scripts/Card.js";
+import FormValidator from "../scripts/FormValidator.js";
+import PopupWithImages from "../scripts/PopupWithImages.js";
+import PopupWithForm from "../scripts/PopupWithForm.js";
 import Section from "../scripts/Section.js";
+import UserInfo from "../scripts/UserInfo.js";
 
-const initialCards = [
-  {
-    name: "Mill Valley, CA",
-    link: "./images/mill-valley-ca.jpg",
-  },
-  {
-    name: "Niagara Falls, NY",
-    link: "./images/niagara-falls-ny.jpg",
-  },
-  {
-    name: "Grand Canyon, AZ",
-    link: "./images/page-az.jpg",
-  },
-  {
-    name: "Yellowstone, Wy",
-    link: "./images/yellowstone-wy.jpg",
-  },
-  {
-    name: "Lincoln, Nh",
-    link: "./images/lincoln-nh.jpg",
-  },
-  {
-    name: "Traper Creek, Ak",
-    link: "./images/trapper-creek-ak.jpg",
-  },
-];
+import {
+  popupWithImageSelector,
+  popupImageSelectors,
+  openedElementClass,
+  closedElementClass,
+  elementCloseButtonSelector,
+} from "../scripts/utils.js";
 
-// ESTABLECE LAS CARTAS INICIALES JUNTO CON SUS BOTONES
-/*const cardBuilder = new Section({arr: initialCards, renderer: (item) => ; }){
-    const card = new Card (){}
+import {
+  initialCards,
+  cardDataSelectors,
+  cardButtonsSelectors,
+  likeIconSelector,
+  elements,
+  elementTemplate,
+  singleElementSelector,
+} from "../scripts/utils.js";
+
+import {
+  popupCloseButtonSelector,
+  formSelector,
+  inputSelector,
+  saveButtonSelector,
+} from "../scripts/utils.js";
+
+import { editButton, addButton } from "../scripts/utils.js";
+
+import { errorMesageClass, userData } from "../scripts/utils.js";
+
+const userInfo = new UserInfo(userData);
+
+const imagePopup = new PopupWithImages(
+  popupWithImageSelector,
+  popupImageSelectors
+);
+
+imagePopup.setEventListeners(elementCloseButtonSelector);
+
+function handleCardClick(imObj) {
+  imagePopup.open(openedElementClass, closedElementClass, imObj);
 }
 
-function setInitialCards() {
-  initialCards.forEach(function (tarjeta) {
-    new Card(tarjeta.name, tarjeta.link, elmntTemplate, elements);
-  });
-}*/
+imagePopup.close(openedElementClass, closedElementClass);
 
-setInitialCards();
-
-// ESTABLECE LOS DETECTORES PARA LOS FORMULARIOS
-
-function addDetectors(formsArray) {
-  formsArray.forEach((form) => {
-    const inputs = Array.from(form.querySelectorAll(".form__popup-input"));
-    const spanErrors = new Map();
-
-    inputs.forEach((input) => {
-      const errorSpan = form.querySelector(`#${input.id}-error`);
-      if (errorSpan) {
-        spanErrors.set(input.id, errorSpan);
-      }
-    });
-
-    const selectorObjt = {
-      crntForm: form,
-      inputs,
-      crntBtn: form.querySelector(".form__save-button"),
-      spanErrors,
-    };
-    const validator = new FormValidator(selectorObjt, null);
-
-    selectorObjt.inputs.forEach((input) => {
-      input.addEventListener("input", (evt) => {
-        validator.EnableValidation(evt);
-      });
-    });
-  });
+function handleDeleteClick(element) {
+  element.remove();
 }
 
-addDetectors(popupForms);
+const cards = new Section(
+  {
+    items: initialCards,
+    renderer: function (imObj, elementTemplate, singleElementSelector) {
+      const card = new Card(
+        imObj,
+        elementTemplate,
+        singleElementSelector,
+        handleCardClick,
+        handleDeleteClick
+      );
+      const newElement = card.CreateCard(
+        cardDataSelectors,
+        cardButtonsSelectors,
+        likeIconSelector
+      );
+      cards.addItem(newElement);
+    },
+  },
+  elements
+);
 
-// AGREGA LOS LISTENERS PARA CERRAR VENTANAS MODALES Y ELEMENTOS ABIERTOS
+cards.renderer(elementTemplate, singleElementSelector);
 
-closeButtons.forEach((button) => {
-  button.addEventListener("click", function (evt) {
-    let currentPopup = evt.target.closest(".popup");
-    if (currentPopup) {
-      closePopup(currentPopup);
-    }
+function handleSaveSubmitEvt(valuesObj) {
+  userInfo.setUserInfo(valuesObj);
+  profilePopup.close();
+}
+
+function handleCreateSubmitEvt(valuesObj) {
+  const newCard = new Card(
+    valuesObj,
+    elementTemplate,
+    singleElementSelector,
+    handleCardClick,
+    handleDeleteClick
+  );
+  const newCardElement = newCard.CreateCard(
+    cardDataSelectors,
+    cardButtonsSelectors,
+    likeIconSelector
+  );
+  cards.addItem(newCardElement);
+  placePopup.close();
+}
+
+const profilePopupElement = document.querySelector("#profileModal");
+const placePopupElement = document.querySelector("#placeModal");
+
+const getValidatorConfig = (popupElement) => {
+  const inputs = Array.from(popupElement.querySelectorAll(inputSelector));
+  const spanErrors = new Map();
+
+  inputs.forEach((input) => {
+    const errorSpan = popupElement.querySelector(`#${input.id}-error`);
+    if (errorSpan) spanErrors.set(input.id, errorSpan);
   });
-});
 
-document.addEventListener("keydown", function (evt) {
-  if (evt.key === "Escape") {
-    popupForms.forEach((form) => {
-      if (form.closest(".popup").classList.contains("popup_opened")) {
-        const crntPopup = form.closest(".popup");
-        closePopup(crntPopup);
-      }
-    });
-
-    const slctnArr = Array.from(document.querySelectorAll(".element__opened"));
-
-    closeOpndElmnt(slctnArr);
-  }
-});
-
-document.addEventListener("click", function (evt) {
-  if (evt.target.classList.contains("popup")) {
-    closePopup(evt.target);
-  }
-
-  if (evt.target.classList.contains("element__opened")) {
-    const slctnArr = Array.from(document.querySelectorAll(".element__opened"));
-
-    closeOpndElmnt(slctnArr);
-  }
-});
-
-// AGREGA LOS DETECTORES PARA ABRIR LOS POPPUPS
-
-editButton.addEventListener("click", function () {
-  openPopup(popupForms[0]);
-});
-
-addButton.addEventListener("click", function () {
-  openPopup(popupForms[1]);
-});
-
-const saveBtnList = () => {
-  saveButtons.forEach((saveButton) => {
-    saveButton.addEventListener("click", btnFunction);
-  });
+  return {
+    crntForm: popupElement.querySelector(formSelector),
+    inputs,
+    crntBtn: popupElement.querySelector(saveButtonSelector),
+    spanErrors,
+  };
 };
 
-saveBtnList();
+const profileValidator = new FormValidator(
+  getValidatorConfig(profilePopupElement),
+  null,
+  errorMesageClass
+);
+const placeValidator = new FormValidator(
+  getValidatorConfig(placePopupElement),
+  null,
+  errorMesageClass
+);
 
-function initializePopups() {
-  const popupForms = [document.forms.profileForm, document.forms.newPlaceForm];
-  popupForms.forEach((popup) => {
-    if (popup) {
-      closePopup(popup.closest(".popup"));
-    }
+profileValidator._confObjt.inputs.forEach((input) => {
+  input.addEventListener("input", (evt) => {
+    profileValidator.EnableValidation(evt);
   });
-}
+});
+placeValidator._confObjt.inputs.forEach((input) => {
+  input.addEventListener("input", (evt) => {
+    placeValidator.EnableValidation(evt);
+  });
+});
 
-// CIERRA POR PRIMERA VEZ LAS VENTANAS MODALES
-document.addEventListener("DOMContentLoaded", initializePopups);
-window.addEventListener("load", initializePopups);
+const profilePopup = new PopupWithForm(
+  "#profileModal",
+  handleSaveSubmitEvt,
+  formSelector,
+  profileValidator
+);
+const placePopup = new PopupWithForm(
+  "#placeModal",
+  handleCreateSubmitEvt,
+  formSelector,
+  placeValidator
+);
+
+profilePopup.setEventListeners(
+  popupCloseButtonSelector,
+  formSelector,
+  inputSelector
+);
+placePopup.setEventListeners(
+  popupCloseButtonSelector,
+  formSelector,
+  inputSelector
+);
+
+editButton.addEventListener("click", function () {
+  profilePopup.open();
+});
+addButton.addEventListener("click", function () {
+  placePopup.open();
+});
+
+profilePopup.close();
+placePopup.close();
