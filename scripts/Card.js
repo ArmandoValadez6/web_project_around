@@ -1,19 +1,23 @@
 export default class Card {
   constructor(
-    { name, link },
+    { name, link, isLiked, _id },
     elementTemplate,
     singleElementSelector,
     handleCardClick,
-    handleDeleteClick
+    handleDeleteClick,
+    handleLikeClick
   ) {
     this._name = name;
     this._link = link;
+    this._cardId = _id;
+    this._likeStatus = isLiked;
     this._elementTemplate = elementTemplate;
     this._singleElementSelector = this._elementTemplate
       .querySelector(singleElementSelector)
       .cloneNode(true);
     this._handleCardClick = handleCardClick;
     this._handleDeleteClick = handleDeleteClick;
+    this._handleLikeClick = handleLikeClick;
   }
 
   CreateCard(
@@ -40,23 +44,22 @@ export default class Card {
   }
 
   _AddLikeBtn(newCard, likeButtonSelector, likeIconSelector) {
-    this._likeBtn = newCard.querySelector(likeButtonSelector);
-    this._likeIconSelector = this._likeBtn.querySelector(likeIconSelector);
+    const likeBtn = newCard.querySelector(likeButtonSelector);
+    const likeIcon = likeBtn.querySelector(likeIconSelector);
+    if (this._likeStatus == true) {
+      likeIcon.textContent = "🖤";
+    }
 
-    this._handleLikeClick = () => {
-      if (this._likeIconSelector.textContent === "🤍") {
-        this._likeIconSelector.textContent = "🖤";
-      } else {
-        this._likeIconSelector.textContent = "🤍";
-      }
-    };
-    this._likeBtn.addEventListener("click", this._handleLikeClick);
+    likeBtn.addEventListener("click", () => {
+      this._handleLikeClick(likeIcon, this._cardId, this._likeStatus);
+      this._likeStatus = !this._likeStatus;
+    });
   }
 
   _AddDeleteBtn(toDeleteElmnt, deleteButtonSelector) {
     this._deleteBtn = toDeleteElmnt.querySelector(deleteButtonSelector);
     this._deleteBtn.addEventListener("click", () => {
-      this._handleDeleteClick(this._newCard);
+      this._handleDeleteClick(undefined, this._cardId, this._newCard);
     });
   }
 

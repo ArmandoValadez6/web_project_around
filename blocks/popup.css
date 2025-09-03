@@ -11,7 +11,8 @@
 }
 
 .popup__container {
-  max-width: 430px;
+  max-width: 360px;
+  width: 100%;
   background-color: #fff;
   position: fixed;
 
@@ -59,7 +60,7 @@
   line-height: 29.05px;
 
   margin-top: 0;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 700px) {

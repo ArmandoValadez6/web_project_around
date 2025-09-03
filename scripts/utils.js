@@ -8,33 +8,6 @@ const openedElementClass = "element_opened";
 const closedElementClass = "element_closed";
 const elementCloseButtonSelector = ".element__close-button";
 
-const initialCards = [
-  {
-    name: "Mill Valley, CA",
-    link: "./images/mill-valley-ca.jpg",
-  },
-  {
-    name: "Niagara Falls, NY",
-    link: "./images/niagara-falls-ny.jpg",
-  },
-  {
-    name: "Grand Canyon, AZ",
-    link: "./images/page-az.jpg",
-  },
-  {
-    name: "Yellowstone, Wy",
-    link: "./images/yellowstone-wy.jpg",
-  },
-  {
-    name: "Lincoln, Nh",
-    link: "./images/lincoln-nh.jpg",
-  },
-  {
-    name: "Traper Creek, Ak",
-    link: "./images/trapper-creek-ak.jpg",
-  },
-];
-
 const elements = ".elements";
 const elementTemplate = document.querySelector("#element-template").content;
 const singleElementSelector = ".element__single";
@@ -58,12 +31,28 @@ const saveButtonSelector = ".form__save-button";
 
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
+const changeButton = document.querySelector(".profile__avatar-button");
 
 const userData = {
   userNameSelector: ".profile__user-name",
   userJobSelector: ".profile__user-occupation",
+  userAvatarSelector: ".profile__avatar-image",
 };
 const errorMesageClass = "form__input_type_error";
+
+const profilePopupElement = document.querySelector("#profileModal");
+const placePopupElement = document.querySelector("#placeModal");
+const avatarPopupElement = document.querySelector("#avatarModal");
+
+//CREDENCIALES PARA LA API
+
+const apiLink = "https://around-api.es.tripleten-services.com/v1/";
+const userToken = "938695b0-a584-4f6b-9f03-293945887999";
+const userInfoExtension = "users/me/";
+const cardsExtension = "cards/";
+const avatarExtension = "avatar/";
+
+//GRUPO DE EXPORTACIONES
 
 export {
   popupWithImageSelector,
@@ -74,7 +63,6 @@ export {
 };
 
 export {
-  initialCards,
   cardDataSelectors,
   cardButtonsSelectors,
   likeIconSelector,
@@ -90,6 +78,16 @@ export {
   saveButtonSelector,
 };
 
-export { editButton, addButton };
+export { editButton, addButton, changeButton };
 
 export { errorMesageClass, userData };
+
+export {
+  apiLink,
+  userToken,
+  userInfoExtension,
+  cardsExtension,
+  avatarExtension,
+};
+
+export { profilePopupElement, placePopupElement, avatarPopupElement };

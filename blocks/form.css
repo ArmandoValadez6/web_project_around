@@ -1,5 +1,6 @@
 .form__fieldset {
   width: 358px;
+  margin-top: 54px;
 }
 
 .form__fieldset-profile-info {
@@ -17,14 +18,14 @@
   width: 100%;
   border: none;
   border-bottom: 1px solid #c4c4c4;
-  margin-top: 30px;
+  margin-bottom: 30px;
   font-size: 14px;
   font-family: "Inter Regular", "Arial", sans-serif;
   padding-bottom: 13px;
 }
 
-.form__save-button {
-  margin-top: 48px;
+.form__button {
+  margin-top: 18px;
   width: 100%;
   min-height: 51px;
   border-radius: 2px;
@@ -36,11 +37,11 @@
   font-size: 18px;
 }
 
-.form__save-button:hover {
+.form__button:hover {
   opacity: 80%;
 }
 
-.form__save-button:disabled {
+.form__button:disabled {
   background-color: #fff;
   border: 2px solid #c4c4c4;
   color: #c4c4c4;

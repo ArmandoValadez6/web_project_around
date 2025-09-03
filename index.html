@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Armando-Valadez" />
     <meta name="keywords" content="Tripleten, 7th Sprint, Around" />
-    <meta
-      name="description"
-      content="Proyecto del 7mo Sprint en Tripleten (Brief con figma, diseño grid y responsivo e introduccion de JavaScript)"
-    />
+    <meta name="description" content="Proyecto del 12vo Sprint en Tripleten" />
     <link rel="shortcut icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./pages/index.css" />
   </head>
@@ -27,24 +24,27 @@
       </header>
 
       <main class="content">
-        <div class="profile">
+        <button type="button" class="profile__avatar-button">
+          <img src="" alt="Profile-avatar" class="profile__avatar-image" />
           <img
-            src="./images/avatar.jpg"
-            alt="Profile-avatar"
-            class="profile__avatar"
+            src="./images/edit-icon.svg"
+            alt="Edit-button"
+            class="profile__avatar-edit-icon"
           />
+        </button>
+        <div class="profile">
           <div class="profile__info">
             <div class="profile__name-button-group">
-              <p class="profile__user-name">Jacques Cousteau</p>
+              <p class="profile__user-name"></p>
               <button class="profile__edit-button">
                 <img
                   src="./images/edit-button.jpg"
-                  alt="Edit-Btton"
+                  alt="Edit-button"
                   class="profile__edit-button-image"
                 />
               </button>
             </div>
-            <p class="profile__user-occupation">Explorador</p>
+            <p class="profile__user-occupation"></p>
           </div>
           <button class="profile__add-button">
             <img
@@ -141,6 +141,52 @@
                 Crear
               </button>
             </form>
+          </div>
+        </section>
+
+        <section class="popup popup_opened" id="avatarModal">
+          <div class="popup__container">
+            <h2 class="popup__title">Cambiar foto de perfil</h2>
+            <button class="popup__close-button">
+              <span class="popup__close-icon">&#x2715;</span>
+            </button>
+            <form class="form popup__form" name="avatarChangeModal" novalidate>
+              <fieldset class="form__fieldset form__fieldset-nuevo-lugar">
+                <input
+                  class="form__popup-input form__input-url"
+                  placeholder="Enlace a la imagen"
+                  id="url"
+                  name="link"
+                  type="URL"
+                  required
+                />
+                <span class="form__error_visible" id="url-error"></span>
+              </fieldset>
+              <button
+                type="submit"
+                class="form__button form__save-button"
+                id="crea"
+                disabled
+              >
+                Guardar
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <section class="popup popup_opened" id="confirmationPopup">
+          <div class="popup__container">
+            <h2 class="popup__title">¿Estás seguro?</h2>
+            <button class="popup__close-button">
+              <span class="popup__close-icon">&#x2715;</span>
+            </button>
+            <button
+              type="submit"
+              class="form__button form__confirmation-button"
+              id="elimina"
+            >
+              Si
+            </button>
           </div>
         </section>
 
